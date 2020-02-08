@@ -1,4 +1,4 @@
-import { BUY_ITEM, REMOVE_FEATURE } from '../actions';
+import { BUY_FEATURE, REMOVE_FEATURE } from '../actions';
 
 export const initialState = {
     additionalPrice: 0,
@@ -20,48 +20,42 @@ export const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
 
-    case BUY_ITEM:
-      // console.log(action.payload);
-      if (state.features && state.features.filter(feature => feature.name !== action.payload.name)) {
+    case BUY_FEATURE:
+      console.log('BUY_FEATURE action initated!');
+      if (state.car.features.includes(action.payload) === false) {
         return {
           ...state,
-          features: [...state.features, action.payload],
+          additionalPrice: state.additionalPrice + action.payload.price,
           car: {
             ...state.car,
-            price: state.car.price + action.payload.price
+            features: [...state.car.features, action.payload]
           }
         };
       }
-      else {
-        return {
-          ...state,
-          features: [action.payload],
-          car: {
-            ...state.car,
-            price: state.car.price + action.payload.price
-          }
-        };
-      }
+      return state;
 
     case REMOVE_FEATURE:
-      // console.log(action.payload);
-      if (state.features) {
-        const updatedFeatures = state.features.filter(feature => feature.name !== action.payload.name);
-        // console.log(updatedFeatures);
+      console.log('REMOVE_FEATURE action initiated!');
+      if (state.car.features.length > 0) {
+        const updatedFeatures = state.car.features.filter(feature => feature !== action.payload);
+        // if updatedFeatures === state.car.features, that means the feature is not in the array; nothing was filtered out.
+        if (updatedFeatures === state.car.features) {
+          return state;
+        }
         return {
           ...state,
-          features: updatedFeatures,
+          additionalPrice: state.additionalPrice - action.payload.price,
           car: {
             ...state.car,
-            price: state.car.price - action.payload.price
+            features: updatedFeatures
           }
         };
       }
-      else {
-        return state;
-      }
+      return state;
+
     default:
       return state;
+
   }
 };
 

@@ -1,14 +1,14 @@
-export const BUY_ITEM = 'BUY_ITEM';
+export const BUY_FEATURE = 'BUY_FEATURE';
 export const REMOVE_FEATURE = 'REMOVE_FEATURE';
 
-export const buyItem = item => {
+export const buyFeature = feature => {
     return {
-        type: BUY_ITEM, payload: item
+        type: BUY_FEATURE, payload: feature
     }
 }
 
-export const removeFeature = item => {
+export const removeFeature = feature => {
     return {
-        type: REMOVE_FEATURE, payload: item
+        type: REMOVE_FEATURE, payload: feature
     }
 }
